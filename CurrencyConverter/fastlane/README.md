@@ -31,6 +31,38 @@ Description of what the lane does
 
 
 
+### ios custom_lane2
+
+```sh
+[bundle exec] fastlane ios custom_lane2
+```
+
+
+
+### ios custom_lane3
+
+```sh
+[bundle exec] fastlane ios custom_lane3
+```
+
+
+
+### ios custom_lane4
+
+```sh
+[bundle exec] fastlane ios custom_lane4
+```
+
+
+
+### ios custom_lane5
+
+```sh
+[bundle exec] fastlane ios custom_lane5
+```
+
+
+
 ### ios code_coverage
 
 ```sh

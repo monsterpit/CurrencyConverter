@@ -41,6 +41,8 @@ platform :ios do
     UI.message "commit has #{get_last_commit_hash}"
     UI.message "publishing to github"
     post_message_on_github(message: "Code Coverage #{code_coverage_value}")
+
+    
   end
 
   lane :get_last_commit_hash do
@@ -53,6 +55,32 @@ platform :ios do
     
   end
 
+  lane :custom_lane2 do
+    scan
+  end
+
+  lane :custom_lane3 do
+    slather(
+    configuration: ".slather.yml"
+  )
+  end
+
+  lane :custom_lane4 do
+   scan
+   xcov(
+    is_swift_package: true,
+    output_directory: "fastlane/xcov_output"
+   )
+  end
+
+  lane :custom_lane5 do
+    danger(
+  # danger_id: "unit-tests",
+  dangerfile: "Dangerfile",
+  github_api_token: "",
+  verbose: true
+)
+  end
 
   lane :code_coverage do
     current_dir = Dir.pwd
