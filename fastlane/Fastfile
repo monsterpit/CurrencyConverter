@@ -24,7 +24,7 @@ platform :ios do
   OWNER_GITHUB_TOKEN_P1 = "ghp_8G76dA4wK0ohf3144KP5fp"
   OWNER_GITHUB_TOKEN_P2 = "SV6wKiti1b0pcN"
   REPO_NAME = "CurrencyConverter" 
-    
+     
   desc "Description of what the lane does"
   lane :custom_lane do
     clear_derived_data
