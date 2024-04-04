@@ -45,6 +45,15 @@ platform :ios do
     
   end
 
+  lane :custom_lane_slather do
+    slather(
+      scheme: "CurrencyConverter",
+      proj: "CurrencyConverter.xcodeproj",
+      output_directory: "fastlane/code_coverage",
+      html: true
+    )
+  end 
+
   lane :get_last_commit_hash do
     # Execute git command to get the last commit hash
     last_commit_hash = sh("git rev-parse HEAD").strip
