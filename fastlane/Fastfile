@@ -27,6 +27,7 @@ platform :ios do
 
   desc "Description of what the lane does"
   lane :custom_lane do
+    clear_derived_data
     scan
     slather(
       scheme: "CurrencyConverter",
@@ -34,13 +35,13 @@ platform :ios do
       output_directory: "fastlane/code_coverage",
       html: true
     )
-    UI.message "obtaining coverage number"
-    code_coverage
-    UI.message "Code Coverage: #{code_coverage_value}"
-    UI.message "getting commit sha"
-    UI.message "commit has #{get_last_commit_hash}"
-    UI.message "publishing to github"
-    post_message_on_github(message: "Code Coverage #{code_coverage_value}")
+    # UI.message "obtaining coverage number"
+    # code_coverage
+    # UI.message "Code Coverage: #{code_coverage_value}"
+    # UI.message "getting commit sha"
+    # UI.message "commit has #{get_last_commit_hash}"
+    # UI.message "publishing to github"
+    # post_message_on_github(message: "Code Coverage #{code_coverage_value}")
 
     
   end
