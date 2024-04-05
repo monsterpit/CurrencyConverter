@@ -23,6 +23,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Description of what the lane does
 
+### ios custom_lane_wow
+
+```sh
+[bundle exec] fastlane ios custom_lane_wow
+```
+
+
+
 ### ios get_last_commit_hash
 
 ```sh

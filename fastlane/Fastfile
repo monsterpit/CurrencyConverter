@@ -24,7 +24,7 @@ platform :ios do
   OWNER_GITHUB_TOKEN_P1 = "ghp_8G76dA4wK0ohf3144KP5fp"
   OWNER_GITHUB_TOKEN_P2 = "SV6wKiti1b0pcN"
   REPO_NAME = "CurrencyConverter" 
-     
+  
   desc "Description of what the lane does"
   lane :custom_lane do
     clear_derived_data
@@ -33,7 +33,9 @@ platform :ios do
       scheme: "CurrencyConverter",
       proj: "CurrencyConverter.xcodeproj",
       output_directory: "fastlane/code_coverage",
-      html: true
+     # html: true,
+      cobertura_xml: true,
+      ignore: ["CurrencyConverter/Sources/Modules/View/*","CurrencyConverter/Sources/Managers/*"]
     )
     # UI.message "obtaining coverage number"
     # code_coverage
@@ -44,6 +46,17 @@ platform :ios do
     # post_message_on_github(message: "Code Coverage #{code_coverage_value}")
 
     
+  end
+
+  lane :custom_lane_wow do 
+    slather(
+      scheme: "CurrencyConverter",
+      proj: "CurrencyConverter.xcodeproj",
+      output_directory: "fastlane/code_coverage",
+       html: true,
+      # cobertura_xml: true,
+      ignore: ["CurrencyConverter/Sources/Modules/View/*","CurrencyConverter/Sources/Managers/*","CurrencyConverter/Sources/Utils/*"]
+    )
   end
 
   lane :get_last_commit_hash do

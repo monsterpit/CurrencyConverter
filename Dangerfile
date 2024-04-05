@@ -1,3 +1,6 @@
+
+
+
 # Sometimes it's a README fix, or something like that - which isn't relevant for
 # including in a project's CHANGELOG for example
 #declared_trivial = github.pr_title.include? "#trivial"
@@ -13,3 +16,31 @@
 #fail("fit left in tests") if `grep -r fit specs/ `.length > 1
 
 message("Hello, this worked")
+
+def generate_coverage_message(coverage_file_path)
+    current_dir = Dir.pwd
+    complete_coverage_file_path = "#{current_dir}/#{coverage_file_path}"
+    UI.message "Coverage file path: #{complete_coverage_file_path}"
+
+    first_term = "id=\"total_coverage\">"
+    second_term = "</span>"
+
+    begin
+    # Open the file in read mode
+    File.open(complete_coverage_file_path, "r") do |file|
+        # Read the contents of the file
+        file_data = file.read
+        first_string = file_data.split(first_term, -1)[1]
+        final_string = first_string.split(second_term, -1)[0]
+        # Output the contents
+        message = final_string
+    end
+    rescue Errno::ENOENT
+    # Handling for "No such file or directory" error
+    message "File not found. #{complete_coverage_file_path}"
+    return message
+    end
+end  
+coverage_file_path = "fastlane/code_coverage/index.html"
+coverage_message = generate_coverage_message(coverage_file_path)
+message(coverage_message)
