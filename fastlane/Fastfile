@@ -26,17 +26,19 @@ platform :ios do
   REPO_NAME = "CurrencyConverter" 
   
   desc "Description of what the lane does"
-  lane :custom_lane do
+  lane :custom_lane do |options|
     clear_derived_data
     scan
     slather(
       scheme: "CurrencyConverter",
       proj: "CurrencyConverter.xcodeproj",
+      source_directory: "",
       output_directory: "fastlane/code_coverage",
      # html: true,
       cobertura_xml: true,
       ignore: ["CurrencyConverter/Sources/Modules/View/*","CurrencyConverter/Sources/Managers/*"]
     )
+
     # UI.message "obtaining coverage number"
     # code_coverage
     # UI.message "Code Coverage: #{code_coverage_value}"
@@ -44,18 +46,44 @@ platform :ios do
     # UI.message "commit has #{get_last_commit_hash}"
     # UI.message "publishing to github"
     # post_message_on_github(message: "Code Coverage #{code_coverage_value}")
-
-    
+    executeDanger(options)
   end
 
+  lane :executeDanger do |options|
+    token = options[:token]
+    danger(
+     # danger_id: "unit-tests",
+      dangerfile: "Dangerfile",
+      github_api_token: token,
+      pr: "https://github.com/monsterpit/CurrencyConverter/pull/1",
+      verbose: true
+    )
+  end
+
+  # lane :custom_lane_wow do 
+  #   slather(
+  #     # scheme: "CurrencyConverter",
+  #     proj: "CurrencyConverter.xcodeproj",
+  #     source_directory: "dsf",
+  #     output_directory: "fastlane/code_coverage",
+  #      html: true,
+  #     # cobertura_xml: true,
+  #     ignore: ["CurrencyConverter/Sources/Modules/View/*","CurrencyConverter/Sources/Managers/*","CurrencyConverter/Sources/Utils/*"]
+  #   )
+  #   xcov(
+  #     is_swift_package: true,
+  #     project: "CurrencyConverter.xcodeproj",
+  #     scheme: "CurrencyConverter",
+  #     output_directory: "fastlane/xcov_output"
+  #   )
+  # end
+
   lane :custom_lane_wow do 
-    slather(
-      scheme: "CurrencyConverter",
-      proj: "CurrencyConverter.xcodeproj",
-      output_directory: "fastlane/code_coverage",
-       html: true,
-      # cobertura_xml: true,
-      ignore: ["CurrencyConverter/Sources/Modules/View/*","CurrencyConverter/Sources/Managers/*","CurrencyConverter/Sources/Utils/*"]
+    scan
+    xcov(
+      json_report: true,
+      is_swift_package: true,
+      output_directory: "fastlane/xcov_output"
     )
   end
 
@@ -82,6 +110,7 @@ platform :ios do
   lane :custom_lane4 do
    scan
    xcov(
+    json_report: true,
     is_swift_package: true,
     output_directory: "fastlane/xcov_output"
    )

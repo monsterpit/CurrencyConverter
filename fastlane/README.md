@@ -23,6 +23,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Description of what the lane does
 
+### ios executeDanger
+
+```sh
+[bundle exec] fastlane ios executeDanger
+```
+
+
+
 ### ios custom_lane_wow
 
 ```sh
