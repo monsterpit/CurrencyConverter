@@ -18,3 +18,5 @@ jobs:
         with:
           message: |
             Hello world ! :wave:
+          comment_tag: execution
+          pr_number: 1
