@@ -55,7 +55,7 @@ platform :ios do
      # danger_id: "unit-tests",
       dangerfile: "Dangerfile",
       github_api_token: token,
-      pr: "https://github.com/monsterpit/CurrencyConverter/pull/1",
+     # pr: "https://github.com/monsterpit/CurrencyConverter/pull/1",
       verbose: true
     )
   end
