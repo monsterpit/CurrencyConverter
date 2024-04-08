@@ -15,7 +15,7 @@
 #fail("fdescribe left in tests") if `grep -r fdescribe specs/ `.length > 1
 #fail("fit left in tests") if `grep -r fit specs/ `.length > 1
 
-message("Hello testing danger")
+message("Hello vikas new danger")
 
 # def generate_coverage_message(coverage_file_path)
 #     current_dir = Dir.pwd
