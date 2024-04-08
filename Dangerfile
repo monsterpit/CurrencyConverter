@@ -60,7 +60,7 @@ def generate_coverage_message(coverage_file_path)
     # Format coverage value to have only two decimal points
     formatted_coverage = format('%.2f', coverage)
 
-    return formatted_coverage
+    return "kya bollo bhai #{formatted_coverage}"
 end  
 coverage_file_path = "fastlane/xcov_output/report.json"
 coverage_message = generate_coverage_message(coverage_file_path)
