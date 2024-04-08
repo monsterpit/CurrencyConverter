@@ -110,11 +110,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Use Ruby 2.x
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.x
-
       - name: Install dependencies
         run: gem install bundler
       - name: Install Fastlane
