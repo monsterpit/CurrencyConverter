@@ -15,6 +15,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## iOS
 
+### ios custom_lane_danger
+
+```sh
+[bundle exec] fastlane ios custom_lane_danger
+```
+
+
+
 ### ios custom_lane
 
 ```sh
