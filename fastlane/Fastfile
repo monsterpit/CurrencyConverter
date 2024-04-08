@@ -25,6 +25,18 @@ platform :ios do
   OWNER_GITHUB_TOKEN_P2 = "SV6wKiti1b0pcN"
   REPO_NAME = "CurrencyConverter" 
   
+
+  lane :custom_lane_danger do |options|
+    token = options[:token]
+    danger(  
+     # danger_id: "unit-tests",
+      dangerfile: "Dangerfile",
+      github_api_token: token,
+     # pr: "https://github.com/monsterpit/CurrencyConverter/pull/1",
+      verbose: true
+    )
+  end
+
   desc "Description of what the lane does"
   lane :custom_lane do |options|
     clear_derived_data
