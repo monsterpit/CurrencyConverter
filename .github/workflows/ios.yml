@@ -116,4 +116,4 @@ jobs:
         run: bundle install
 
       - name: Run Fastlane
-        run: bundle exec fastlane custom_lane_danger \token:${{ secrets.GITHUB_TOKEN }}
+        run: bundle exec fastlane custom_lane_danger token:${{ secrets.GITHUB_TOKEN }}
