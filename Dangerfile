@@ -15,7 +15,7 @@
 #fail("fdescribe left in tests") if `grep -r fdescribe specs/ `.length > 1
 #fail("fit left in tests") if `grep -r fit specs/ `.length > 1
 
-message("Hello vikas new danger")
+message("Testing vikas new danger")
 
 # def generate_coverage_message(coverage_file_path)
 #     current_dir = Dir.pwd
@@ -59,7 +59,7 @@ def generate_coverage_message(coverage_file_path)
 
     # Format coverage value to have only two decimal points
     formatted_coverage = format('%.2f', coverage)
-    
+
     return formatted_coverage
 end  
 coverage_file_path = "fastlane/xcov_output/report.json"
