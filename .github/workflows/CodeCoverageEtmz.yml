@@ -9,7 +9,6 @@ on:
       message:
         description: 'JSON message'
         required: true
-        default: '{}'
       prnumber:
         description: 'PR number string'
         required: true
