@@ -22,7 +22,7 @@ def generate_coverage_message(coverage_file_path)
     complete_coverage_file_path = "#{current_dir}/#{coverage_file_path}"
     UI.message "Coverage file path: #{complete_coverage_file_path}"
 
-    first_term = "class=\"summary-counter">"
+    first_term = "class=\"summary-counter\">"
     second_term = "</div>"
 
     begin
