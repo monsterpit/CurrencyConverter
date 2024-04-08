@@ -1,0 +1,38 @@
+# This workflow will build a Swift project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-swift
+
+name: CodeCoverageEtmz
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'JSON message'
+        required: true
+        default: '{}'
+      prnumber:
+        description: 'PR number string'
+        required: true
+permissions:
+  pull-requests: write      
+
+jobs:
+  example_comment_pr:
+    runs-on: ubuntu-latest
+    name: An example job to comment a PR
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Save message to file
+        run: echo "${{ github.event.inputs.message }}" > fastlane/xcov_output/index.json
+
+      - name: Install dependencies
+        run: gem install bundler
+      - name: Install Fastlane
+        run: bundle install
+
+      - name: Run Fastlane
+        run: bundle exec fastlane executeDangerWithPR token:${{ secrets.GITHUB_TOKEN }} pr:${{ github.event.inputs.prnumber }}
+
+
