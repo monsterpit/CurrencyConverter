@@ -23,13 +23,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Save message to file
-        run: echo "${{ github.event.inputs.message }}" > fastlane/xcov_output/index.json
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
 
       - name: Install dependencies
         run: gem install bundler
       - name: Install Fastlane
         run: bundle install
+
+      
+      - name: Save message to file
+        run: echo "${{ github.event.inputs.message }}" > fastlane/xcov_output/index.json
+
 
       - name: Run Fastlane
         run: bundle exec fastlane executeDangerWithPR token:${{ secrets.GITHUB_TOKEN }} pr:${{ github.event.inputs.prnumber }}
