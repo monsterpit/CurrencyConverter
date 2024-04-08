@@ -46,26 +46,17 @@ jobs:
   #         file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
   #         xcodebuild test-without-building -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=$device"
       
-  danger:
+  build:
     runs-on: ubuntu-latest
-    if: github.event_name  == 'pull_request' # if only run pull request when multiple trigger workflow
+    name: "Run Danger"
     steps:
-    - uses: actions/checkout@v4
-    # - uses: ruby/setup-ruby@v1
-    #   with:
-    #     ruby-version: '2.6'
-    - uses: actions/cache@v4
-      with:
-        path: vendor/bundle
-        key: ${{ runner.os }}-gems-${{ hashFiles('Gemfile') }} # change your gemfile path
-        restore-keys: |
-          ${{ runner.os }}-gems-
-    - uses: MeilCli/danger-action@v6
-      with:
-        plugins_file: 'Gemfile'
-        install_path: 'vendor/bundle'
-        danger_file: 'Dangerfile'
-        danger_id: 'danger-pr'
+      - uses: actions/checkout@v1
+      - name: Danger
+        uses: danger/swift@3.15.0
+        with:
+            args: --failOnErrors --no-publish-check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
   # example_comment_pr:
   #   runs-on: ubuntu-latest
