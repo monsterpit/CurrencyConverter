@@ -17,30 +17,51 @@
 
 message("Hello vikas new danger")
 
+# def generate_coverage_message(coverage_file_path)
+#     current_dir = Dir.pwd
+#     complete_coverage_file_path = "#{current_dir}/#{coverage_file_path}"
+#     UI.message "Coverage file path: #{complete_coverage_file_path}"
+
+#     first_term = "class=\"summary-counter\">"
+#     second_term = "</div>"
+
+#     begin
+#     # Open the file in read mode
+#     File.open(complete_coverage_file_path, "r") do |file|
+#         # Read the contents of the file
+#         file_data = file.read
+#         first_string = file_data.split(first_term, -1)[1]
+#         final_string = first_string.split(second_term, -1)[0]
+#         # Output the contents
+#         message = final_string
+#     end
+#     rescue Errno::ENOENT
+#     # Handling for "No such file or directory" error
+#     message "File not found. #{complete_coverage_file_path}"
+#     return message
+#     end
+# end  
+# coverage_file_path = "fastlane/xcov_output/index.html"
+# coverage_message = generate_coverage_message(coverage_file_path)
+# message(coverage_message)
+
+
 def generate_coverage_message(coverage_file_path)
     current_dir = Dir.pwd
     complete_coverage_file_path = "#{current_dir}/#{coverage_file_path}"
     UI.message "Coverage file path: #{complete_coverage_file_path}"
+    json_data = File.read(complete_coverage_file_path)
+    # Parse JSON
+    data = JSON.parse(json_data)
 
-    first_term = "class=\"summary-counter\">"
-    second_term = "</div>"
+    # Extract coverage value
+    coverage = data['coverage']
 
-    begin
-    # Open the file in read mode
-    File.open(complete_coverage_file_path, "r") do |file|
-        # Read the contents of the file
-        file_data = file.read
-        first_string = file_data.split(first_term, -1)[1]
-        final_string = first_string.split(second_term, -1)[0]
-        # Output the contents
-        message = final_string
-    end
-    rescue Errno::ENOENT
-    # Handling for "No such file or directory" error
-    message "File not found. #{complete_coverage_file_path}"
-    return message
-    end
+    # Format coverage value to have only two decimal points
+    formatted_coverage = format('%.2f', coverage)
+    
+    return formatted_coverage
 end  
-coverage_file_path = "fastlane/xcov_output/index.html"
+coverage_file_path = "fastlane/xcov_output/report.json"
 coverage_message = generate_coverage_message(coverage_file_path)
 message(coverage_message)

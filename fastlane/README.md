@@ -39,6 +39,14 @@ Description of what the lane does
 
 
 
+### ios executeDangerWithPR
+
+```sh
+[bundle exec] fastlane ios executeDangerWithPR
+```
+
+
+
 ### ios custom_lane_wow
 
 ```sh

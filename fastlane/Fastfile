@@ -27,8 +27,6 @@ platform :ios do
   
   
   lane :custom_lane_danger do |options|
-    sh("git config --global user.name 'GitHub Actions'")
-    sh("git config --global user.email 'actions@github.com'")
     token = options[:token]
     danger(  
      # danger_id: "unit-tests",
@@ -72,6 +70,17 @@ platform :ios do
       dangerfile: "Dangerfile",
       github_api_token: token,
     #  pr: "https://github.com/monsterpit/CurrencyConverter/pull/1",
+      verbose: true
+    )
+  end
+
+  lane :executeDangerWithPR do |options|
+    token = options[:token]
+    danger(  
+      danger_id: "unit-tests",
+      dangerfile: "Dangerfile",
+      github_api_token: token,
+      pr: "https://github.com/monsterpit/CurrencyConverter/pull/#{options[:pr]}",
       verbose: true
     )
   end
