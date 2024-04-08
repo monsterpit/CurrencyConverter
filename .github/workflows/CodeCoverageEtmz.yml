@@ -36,6 +36,6 @@ jobs:
 
 
       - name: Run Fastlane
-        run: bundle exec fastlane executeDangerWithPR token:${{ secrets.GITHUB_TOKEN }} pr:${{ github.event.inputs.prnumber }}
+        run: bundle exec fastlane custom_lane_danger token:${{ secrets.GITHUB_TOKEN }} pr:${{ github.event.inputs.prnumber }}
 
 
