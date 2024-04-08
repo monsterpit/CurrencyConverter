@@ -64,9 +64,6 @@ jobs:
     if: github.event_name  == 'pull_request' # if only run pull request when multiple trigger workflow
     steps:
     - uses: actions/checkout@v4
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '2.6'
     - uses: actions/cache@v4
       with:
         path: vendor/bundle
