@@ -44,4 +44,4 @@ jobs:
           xcodebuild test-without-building -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=$device"
       
       - name: Danger
-        uses: danger/danger@3.1.2
+        uses: danger/danger
