@@ -1,0 +1,30 @@
+name: Comment on Pull Request
+
+on:
+  repository_dispatch:
+    types: [comment_on_pr]
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Comment on Pull Request
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const github = require('@actions/github');
+            const context = github.context;
+
+            const prNumber = context.payload.client_payload.pull_request_number;
+            const comment = "Your comment goes here.";
+
+            const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
+
+            await octokit.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: comment
+            });
