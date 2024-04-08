@@ -1,4 +1,4 @@
-name: code-coverage
+name: code Coverage
 on:
   workflow_dispatch:
     inputs:
