@@ -6,9 +6,6 @@ name: CodeCoverageEtmz
 on:
   workflow_dispatch:
     inputs:
-      message:
-        description: 'JSON message'
-        required: true
       prnumber:
         description: 'PR number string'
         required: true
