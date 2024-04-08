@@ -32,8 +32,8 @@ platform :ios do
      # danger_id: "unit-tests",
       dangerfile: "Dangerfile",
       github_api_token: token,
-      # remove_previous_comments: true,
-      # new_comment: true,
+      remove_previous_comments: true,
+      new_comment: true,
      # pr: "https://github.com/monsterpit/CurrencyConverter/pull/1",
       verbose: true
     )
