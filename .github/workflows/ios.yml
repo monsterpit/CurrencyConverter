@@ -108,8 +108,9 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-
+        uses: actions/checkout@master
+        with:
+          fetch-depth: 1
       - name: Install dependencies
         run: gem install bundler
       - name: Install Fastlane
