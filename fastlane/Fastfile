@@ -74,6 +74,35 @@ platform :ios do
     )
   end
 
+  lane :save_string_to_json do |options|
+    # Define the string
+    my_string = "{\"coverage\":50.9090}"
+
+    # sh "echo '${{ toJson(my_string) }}' > xcov_output/report.json " 
+    # json_data = JSON.parse(my_string)
+
+    # # Write the JSON data to a file
+    # File.open('xcov_output/report.json', 'w') do |file|
+    #   file.write(JSON.pretty_generate(json_data))
+    # end
+
+    sh "echo '#{my_string}' > xcov_output/report.json"
+
+
+    # Optionally, display the content of the JSON file
+    sh "cat xcov_output/report.json"
+
+    json_data = File.read('xcov_output/report.json')
+
+    # Parse the JSON data
+    parsed_data = JSON.parse(json_data)
+
+    # Extract the coverage value
+    coverage = parsed_data['coverage']
+
+    sh "echo '#{coverage}'"
+  end
+
   lane :executeDangerWithPR do |options|
     token = options[:token]
     danger(  

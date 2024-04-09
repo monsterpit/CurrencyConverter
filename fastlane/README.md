@@ -39,6 +39,14 @@ Description of what the lane does
 
 
 
+### ios save_string_to_json
+
+```sh
+[bundle exec] fastlane ios save_string_to_json
+```
+
+
+
 ### ios executeDangerWithPR
 
 ```sh
