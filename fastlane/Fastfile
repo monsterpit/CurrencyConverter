@@ -165,6 +165,7 @@ platform :ios do
   end
 
   lane :custom_lane4 do
+   sh("rm -rf xcov_output")
    scan
    xcov(
     json_report: true,
