@@ -37,7 +37,7 @@ jobs:
         run: bundle install
       
       - name: Save message to file
-        run: echo '#{github.event.inputs.message}' > xcov_output/report.json
+        run: echo '#{github.event.inputs.message}' > fastlane/xcov_output/report.json
         
 
       # - name: Run Fastlane
