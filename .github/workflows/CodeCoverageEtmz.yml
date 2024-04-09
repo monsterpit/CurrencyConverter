@@ -36,7 +36,7 @@ jobs:
         run: bundle install
       
       - name: Save message to file
-        run: echo "${{ github.event.inputs.message }}" | ruby -rjson -e 'puts JSON.pretty_generate(JSON.parse(STDIN.read))' > fastlane/xcov_output/index.json
+        run: echo "${{ github.event.inputs.message }}" > fastlane/xcov_output/index.json
 
 
       - name: Run Fastlane
