@@ -4,8 +4,13 @@
 name: CodeCoverageEtmz
 
 on:
+  pull_request:
+    types: [opened, synchronize]
   workflow_dispatch:
     inputs:
+      message:
+        description: 'JSON message'
+        required: true
       prnumber:
         description: 'PR number string'
         required: true
@@ -29,13 +34,13 @@ jobs:
         run: gem install bundler
       - name: Install Fastlane
         run: bundle install
-
       
-      # - name: Save message to file
-      #   run: echo "${{ github.event.inputs.message }}" > fastlane/xcov_output/index.json
+      - name: Save message to file
+        run: echo "${{ github.event.inputs.message }}" | ruby -rjson -e 'puts JSON.pretty_generate(JSON.parse(STDIN.read))' > fastlane/xcov_output/index.json
 
 
       - name: Run Fastlane
         run: bundle exec fastlane custom_lane_danger token:${{ secrets.GITHUB_TOKEN }} pr:${{ github.event.inputs.prnumber }}
+
 
 
