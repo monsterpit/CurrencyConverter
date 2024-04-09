@@ -2,6 +2,10 @@ name: iOS starter workflow
 
 on:
   workflow_dispatch:
+    inputs:
+      event_name:
+        description: 'GitHub event name'
+        default: 'pull_request'
   push:
     branches: [ "main" ]
   pull_request:
