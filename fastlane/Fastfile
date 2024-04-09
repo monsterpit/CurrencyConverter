@@ -212,8 +212,10 @@ platform :ios do
   end
 
   lane :post_message_on_github_1 do |options|
-    sh "echo '#{options[:message]}'
+    sh "echo '#{options[:message]}'"
+    sh "echo '-> BITRISE_PERMANENT_DOWNLOAD_URL_MAP: #{options[:message]}'"
   end 
+
   lane :post_message_on_github do |options|
     # Extract required parameters
     message = options[:message]
