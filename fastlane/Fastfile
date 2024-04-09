@@ -211,6 +211,9 @@ platform :ios do
     end
   end
 
+  lane :post_message_on_github_1 do |options|
+    sh "echo '#{options[:message]}'
+  end 
   lane :post_message_on_github do |options|
     # Extract required parameters
     message = options[:message]
