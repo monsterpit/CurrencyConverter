@@ -15,7 +15,8 @@ on:
         description: 'PR number string'
         required: true
 permissions:
-  pull-requests: write      
+  pull-requests: write # required for Danger to post comments
+  issues: write      
 
 jobs:
   example_comment_pr:
@@ -38,7 +39,17 @@ jobs:
       - name: Save message to file
         run: echo "${{ github.event.inputs.message }}" > fastlane/xcov_output/index.json
 
+      # - name: Run Fastlane
+      #   run: bundle exec fastlane custom_lane_danger token:${{ secrets.GITHUB_TOKEN }} pr:${{ github.event.inputs.prnumber }}
+
+
       - name: Run Fastlane
-        run: bundle exec fastlane custom_lane_danger token:${{ secrets.GITHUB_TOKEN }} pr:${{ github.event.inputs.prnumber }}
+        run: |
+          event_path=${{ github.event_path }}
 
+          echo "Override event json file for pull_request_review event."
 
+          event_path="event.json"
+          cat ${{ github.event_path }} | jq '. |= .+ {"number": ${{  github.event.inputs.prnumber  }}}' > $event_path 
+
+          GITHUB_EVENT_PATH=$event_path GITHUB_EVENT_NAME=pull_request bundle exec fastlane custom_lane_danger token:${{ secrets.GITHUB_TOKEN }}
