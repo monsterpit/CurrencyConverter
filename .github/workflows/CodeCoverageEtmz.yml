@@ -4,8 +4,8 @@
 name: CodeCoverageEtmz
 
 on:
-  pull_request:
-    types: [opened, synchronize]
+  # pull_request:
+  #   types: [opened, synchronize]
   workflow_dispatch:
     inputs:
       message:
@@ -37,7 +37,6 @@ jobs:
       
       - name: Save message to file
         run: echo "${{ github.event.inputs.message }}" > fastlane/xcov_output/index.json
-
 
       - name: Run Fastlane
         run: bundle exec fastlane custom_lane_danger token:${{ secrets.GITHUB_TOKEN }} pr:${{ github.event.inputs.prnumber }}
