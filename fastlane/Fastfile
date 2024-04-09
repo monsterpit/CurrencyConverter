@@ -86,6 +86,8 @@ platform :ios do
     #   file.write(JSON.pretty_generate(json_data))
     # end
 
+    sh "mkdir -p xcov_output"
+
     sh "echo '#{my_string}' > xcov_output/report.json"
 
 

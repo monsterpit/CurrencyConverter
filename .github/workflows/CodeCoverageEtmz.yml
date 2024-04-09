@@ -35,6 +35,9 @@ jobs:
         run: gem install bundler
       - name: Install Fastlane
         run: bundle install
+
+      - name: Create xcov_output directory if not present
+        run: mkdir -p fastlane/xcov_output
       
       - name: Save message to file
         run: echo '${{ github.event.inputs.message }}' > fastlane/xcov_output/report.json
