@@ -15,7 +15,8 @@ on:
   #   branches: [ "main" ]
 
 permissions:
-  pull-requests: write
+  pull-requests: write # required for Danger to post comments
+  issues: write 
 
 #jobs:
   # build:
