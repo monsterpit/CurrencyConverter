@@ -130,7 +130,7 @@ jobs:
           echo "Override event json file for pull_request_review event."
 
           event_path="event.json"
-          cat ${{ github.event_path }} | jq '. |= .+ {"number": {prnumber}}' > $event_path 
+          cat ${{ github.event_path }} | jq '. |= .+ {"number": 1}' > $event_path 
 
           GITHUB_EVENT_PATH=$event_path GITHUB_EVENT_NAME=pull_request bundle exec fastlane custom_lane_danger token:${{ secrets.GITHUB_TOKEN }}
 
