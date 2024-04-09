@@ -121,4 +121,15 @@ jobs:
         run: bundle install
 
       - name: Run Fastlane
-        run: bundle exec fastlane custom_lane_danger token:${{ secrets.GITHUB_TOKEN }}
+        run: |
+          event_path=${{ github.event_path }}
+
+          echo "Override event json file for pull_request_review event."
+
+          event_path="event.json"
+          cat ${{ github.event_path }} | jq '. |= .+ {"number": .pull_request.number}' > $event_path 
+
+          GITHUB_EVENT_PATH=$event_path GITHUB_EVENT_NAME=pull_request bundle exec fastlane custom_lane_danger token:${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Run Fastlane
+      #   run: bundle exec fastlane custom_lane_danger token:${{ secrets.GITHUB_TOKEN }}
