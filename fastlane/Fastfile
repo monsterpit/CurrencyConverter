@@ -164,14 +164,18 @@ platform :ios do
   )
   end
 
-  lane :custom_lane4 do
+  lane :custom_lane4 do |options|
    sh("rm -rf xcov_output")
+   
    scan
    xcov(
     json_report: true,
     is_swift_package: true,
     output_directory: "fastlane/xcov_output"
    )
+   source_path = "xcov_output/report.json"
+   destination_path = options[:export_path]
+   sh "cp #{source_path} #{destination_path}"
   end
 
   lane :custom_lane5 do
