@@ -37,10 +37,7 @@ jobs:
         run: bundle install
       
       - name: Save message to file
-        run: |
-          MY_STRING="${{ github.event.inputs.message }}" && \
-          JSON_DATA=$(echo $MY_STRING | jq .) && \
-          echo "$JSON_DATA" > fastlane/xcov_output/report.json 
+        run: echo '${{ toJson(github.event.inputs.message) }}' > fastlane/xcov_output/report.json 
         
 
       # - name: Run Fastlane
