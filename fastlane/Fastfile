@@ -212,8 +212,21 @@ platform :ios do
   end
 
   lane :post_message_on_github_1 do |options|
-    sh "echo '#{options[:message]}'"
-    sh "echo '-> BITRISE_PERMANENT_DOWNLOAD_URL_MAP: #{options[:message]}'"
+    input_string = options[:message]
+    sh "echo '#{input_string}'"
+    # Split the input string into key-value pairs based on the separator "|"
+    pairs = input_string.split('|')
+
+    # Initialize an empty hash to store the key-value pairs
+    result_hash = {}
+    
+    # Iterate over each pair and split it into key and value based on the separator "=>"
+    pairs.each do |pair|
+      key, value = pair.split('=>')
+      result_hash[key] = value
+    end
+
+    sh "echo 'Value of key1 is #{result_hash['report.json']}'"
   end 
 
   lane :post_message_on_github do |options|

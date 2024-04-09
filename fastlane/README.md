@@ -111,6 +111,14 @@ Description of what the lane does
 
 
 
+### ios post_message_on_github_1
+
+```sh
+[bundle exec] fastlane ios post_message_on_github_1
+```
+
+
+
 ### ios post_message_on_github
 
 ```sh
