@@ -192,6 +192,10 @@ platform :ios do
     sh "cp #{file_path} #{destination_path}"
   end
 
+  lane :testingMessage do |options|
+    sh "echo #{options[:message]}"
+  end
+
   lane :custom_lane5 do
     danger(
   # danger_id: "unit-tests",
