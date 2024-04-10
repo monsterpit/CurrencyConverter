@@ -165,17 +165,31 @@ platform :ios do
   end
 
   lane :custom_lane4 do |options|
-   sh("rm -rf xcov_output")
+  #  sh("rm -rf xcov_output")
    
-   scan
-   xcov(
-    json_report: true,
-    is_swift_package: true,
-    output_directory: "fastlane/xcov_output"
-   )
-   source_path = "xcov_output/report.json"
-   destination_path = options[:export_path]
-   sh "cp #{source_path} #{destination_path}"
+  #  scan
+  #  xcov(
+  #   json_report: true,
+  #   is_swift_package: true,
+  #   output_directory: "fastlane/xcov_output"
+  #  )
+  #  source_path = "xcov_output/report.json"
+  #  destination_path = options[:export_path]
+  #  sh "cp #{source_path} #{destination_path}"
+  testing(options)
+  end
+
+  lane :testing do |options|
+    file_path = "xcov_output/report.json"
+    destination_path = options[:export_path]
+    file_content = "This is the content of the file."
+
+    # Create the file and write the content to it
+    File.open(file_path, "w") do |file|
+      file.write(file_content)
+    end
+
+    sh "cp #{file_path} #{destination_path}"
   end
 
   lane :custom_lane5 do
@@ -228,6 +242,27 @@ platform :ios do
 
     sh "echo 'Value of key1 is #{result_hash['report.json']}'"
   end 
+
+
+  desc "Download and save file"
+  lane :download_and_save_file do |options|
+    # Get the URL and destination path from options
+    url = options[:url] + "?access_token=9l8PM-KRCrBQWUJ3Y8-1NaixC9eCM1lGExF2R-pQw3N0DNwMXVkFpSOuAP2aMe3hwfc6hsLLoJh25WFb1ulrHg"
+    destination_path = options[:destination_path]
+
+    # Download the file using open-uri
+    require 'open-uri'
+    file_content = URI.open(url).read
+
+    # Save the file to the destination path
+    File.open(destination_path, 'wb') do |file|
+      file.write(file_content)
+    end
+
+    # Log success message
+    puts "File downloaded and saved to #{destination_path}"
+  end
+
 
   lane :post_message_on_github do |options|
     # Extract required parameters

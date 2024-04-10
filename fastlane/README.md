@@ -119,6 +119,14 @@ Description of what the lane does
 
 
 
+### ios download_and_save_file
+
+```sh
+[bundle exec] fastlane ios download_and_save_file
+```
+
+Download and save file
+
 ### ios post_message_on_github
 
 ```sh
