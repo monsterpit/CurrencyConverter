@@ -95,6 +95,22 @@ Description of what the lane does
 
 
 
+### ios testing
+
+```sh
+[bundle exec] fastlane ios testing
+```
+
+
+
+### ios testingMessage
+
+```sh
+[bundle exec] fastlane ios testingMessage
+```
+
+
+
 ### ios custom_lane5
 
 ```sh
@@ -102,6 +118,14 @@ Description of what the lane does
 ```
 
 
+
+### ios fetch_artificats_list
+
+```sh
+[bundle exec] fastlane ios fetch_artificats_list
+```
+
+This lane fetches list of artificats
 
 ### ios code_coverage
 

@@ -205,6 +205,37 @@ platform :ios do
 )
   end
 
+  CODE_COVERAGE_FILE_NAME = "report.json"
+  desc "This lane fetches list of artificats"
+lane :fetch_artificats_list do |options|
+  artifactSlug = nil
+  # Define the cURL command to call the API
+  curl_command = "curl -s --location 'https://api.bitrise.io/v0.1/apps/#{options[:appSlug]}/builds/#{options[:buildSlug]}/artifacts' \
+--header 'accept: application/json' \
+--header 'Authorization: #{options[:bitriseToken]}'"
+
+  # Execute the cURL command and capture the response
+  api_response = sh(curl_command)
+
+  # Print the API response for debugging
+  UI.message("API Response: #{api_response}")
+
+  # Parse the JSON response
+  begin
+    parsed_response = JSON.parse(api_response)
+    # Process the parsed JSON response
+    parsed_response["data"].each do |artifact|
+      if artifact["title"] == CODE_COVERAGE_FILE_NAME
+        UI.message("Artifact Slug: #{artifact["slug"]}")
+        # call_artificat(artifactSlug: artifact["slug"],appSlug: appSlug,buildSlug: buildSlug)
+        break
+      end
+    end
+  rescue JSON::ParserError => e
+    UI.error("Failed to parse JSON response: #{e.message}")
+  end
+end
+
   lane :code_coverage do
     current_dir = Dir.pwd
     complete_coverage_file_path = "#{current_dir}/#{COVERAGE_FILE_PATH}"
