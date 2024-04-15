@@ -15,6 +15,8 @@
 
 default_platform(:ios)
 
+
+
 platform :ios do
 
   COVERAGE_FILE_PATH = "code_coverage/index.html"
@@ -73,6 +75,12 @@ platform :ios do
       verbose: true
     )
   end
+
+  lane :check_changed_files do
+    changed_files = git_files_changed
+    puts "Changed files: #{changed_files}"
+  end
+  
 
   lane :save_string_to_json do |options|
     # Define the string
