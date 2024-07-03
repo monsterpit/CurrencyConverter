@@ -15,7 +15,7 @@ jobs:
     name: Validate PR title
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         token: ${{ secrets.TOKEN }}
         # env:
         # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
