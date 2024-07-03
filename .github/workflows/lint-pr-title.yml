@@ -15,6 +15,10 @@ jobs:
     name: Validate PR title
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      - uses: MobSF/mobsfscan@main
+        with:
+          args: '. --json'
       # - uses: actions/checkout@v2
       #   with:
       #     repository: monsterpit/CurrencyConverter
