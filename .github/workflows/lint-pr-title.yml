@@ -16,6 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+          with:
+            repository: monsterpit/CurrencyConverter
+            fetch-depth: 0
+            token: ${{ secrets.TOKEN }}
       - uses: MobSF/mobsfscan@main
         with:
           args: '. --json'
