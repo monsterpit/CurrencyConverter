@@ -15,11 +15,11 @@ jobs:
     name: Validate PR title
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        with:
-          repository: monsterpit/CurrencyConverter
-          fetch-depth: 0
-          token: ${{ secrets.TOKEN }}
+      # - uses: actions/checkout@v2
+      #   with:
+      #     repository: monsterpit/CurrencyConverter
+      #     fetch-depth: 0
+      #     token: ${{ secrets.TOKEN }}
         # env:
         # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
