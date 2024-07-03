@@ -19,7 +19,7 @@ jobs:
         with:
           repository: monsterpit/CurrencyConverter
           fetch-depth: 0
-          token: ${{ secrets.TOKEN }}
+          # token: ${{ secrets.TOKEN }}
         # env:
         # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
