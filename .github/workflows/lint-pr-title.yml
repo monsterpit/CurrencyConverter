@@ -16,7 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        token: ${{ secrets.TOKEN }}
+        with:
+          token: ${{ secrets.TOKEN }}
         # env:
         # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
