@@ -17,6 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          repository: monsterpit/CurrencyConverter
           token: ${{ secrets.TOKEN }}
         # env:
         # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
