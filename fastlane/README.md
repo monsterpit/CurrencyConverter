@@ -39,6 +39,14 @@ Description of what the lane does
 
 
 
+### ios check_changed_files
+
+```sh
+[bundle exec] fastlane ios check_changed_files
+```
+
+
+
 ### ios save_string_to_json
 
 ```sh
