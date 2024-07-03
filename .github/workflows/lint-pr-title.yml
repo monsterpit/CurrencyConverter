@@ -28,7 +28,7 @@ jobs:
           # repository: monsterpit/CurrencyConverter
           # fetch-depth: 0
           token: ${{ secrets.TOKEN }}
-        # env:
+        # env:  
         # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
 
       - uses: MobSF/mobsfscan@main
