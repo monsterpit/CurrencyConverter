@@ -1,44 +1,139 @@
 name: iOS starter workflow
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      event_name:
+        description: 'GitHub event name'
+        default: 'pull_request'
+      prnumber:
+        description: 'PR number string'
+        default: "1"
+  # push:
+  #   branches: [ "main" ]
+  # pull_request:
+  #   branches: [ "main" ]
+
+permissions:
+  pull-requests: write # required for Danger to post comments
+  issues: write 
+
+#jobs:
+  # build:
+  #   name: Build and Test default scheme using any available iPhone simulator
+  #   runs-on: macos-latest
+
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #     - name: Set Default Scheme
+  #       run: |
+  #         scheme_list=$(xcodebuild -list -json | tr -d "\n")
+  #         default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
+  #         echo $default | cat >default
+  #         echo Using default scheme: $default
+  #     - name: Build
+  #       env:
+  #         scheme: ${{ 'default' }}
+  #         platform: ${{ 'iOS Simulator' }}
+  #       run: |
+  #         # xcrun xctrace returns via stderr, not the expected stdout (see https://developer.apple.com/forums/thread/663959)
+  #         device=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone.*?[^\(]+' | head -1 | awk '{$1=$1;print}' | sed -e "s/ Simulator$//"`
+  #         if [ $scheme = default ]; then scheme=$(cat default); fi
+  #         if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
+  #         file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
+  #         xcodebuild build-for-testing -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=$device"
+  #     - name: Test
+  #       env:
+  #         scheme: ${{ 'default' }}
+  #         platform: ${{ 'iOS Simulator' }}
+  #       run: |
+  #         # xcrun xctrace returns via stderr, not the expected stdout (see https://developer.apple.com/forums/thread/663959)
+  #         device=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone.*?[^\(]+' | head -1 | awk '{$1=$1;print}' | sed -e "s/ Simulator$//"`
+  #         if [ $scheme = default ]; then scheme=$(cat default); fi
+  #         if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
+  #         file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
+  #         xcodebuild test-without-building -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=$device"
+      
+  # build:
+  #   runs-on: ubuntu-latest
+  #   name: "Run Danger"
+  #   steps:
+  #     - uses: actions/checkout@v1
+  #     - name: Danger
+  #       uses: docker://https://github.com/orgs/danger/packages/container/package/danger-swift
+  #       with:
+  #           danger_file: 'Dangerfile'
+  #           args: --failOnErrors --no-publish-check
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # danger:
+  #   runs-on: ubuntu-latest
+  #   if: github.event_name  == 'pull_request' # if only run pull request when multiple trigger workflow
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #   - uses: actions/cache@v4
+  #     with:
+  #       path: vendor/bundle
+  #       key: ${{ runner.os }}-gems-${{ hashFiles('Gemfile') }} # change your gemfile path
+  #       restore-keys: |
+  #         ${{ runner.os }}-gems-
+  #   - uses: MeilCli/danger-action@v6
+  #     with:
+  #       danger_file: 'Dangerfile'
+  #       danger_id: 'danger-pr'
+  #     env:
+  #       DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+  # example_comment_pr:
+  #   runs-on: ubuntu-latest
+  #   name: An example job to comment a PR
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+
+  #     - name: Comment PR
+  #       uses: thollander/actions-comment-pull-request@v2
+  #       env:
+  #         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+  #       with:
+  #         message: |
+  #           Hello world ! :wave:
+
+  #     - name: PR comment with reactions
+  #       uses: thollander/actions-comment-pull-request@v2
+  #       env:
+  #         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+  #       with:
+  #         message: |
+  #           Hello world ! :wave:
+  #         reactions: eyes, rocket
+
 
 jobs:
   build:
-    name: Build and Test default scheme using any available iPhone simulator
-    runs-on: macos-latest
-
+    runs-on: macOS-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Set Default Scheme
+      - name: Checkout code
+        uses: actions/checkout@master
+        with:
+          fetch-depth: 100
+      - name: Install dependencies
+        run: gem install bundler
+      - name: Install Fastlane
+        run: bundle install
+
+      - name: Run Fastlane
         run: |
-          scheme_list=$(xcodebuild -list -json | tr -d "\n")
-          default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
-          echo $default | cat >default
-          echo Using default scheme: $default
-      - name: Build
-        env:
-          scheme: ${{ 'default' }}
-          platform: ${{ 'iOS Simulator' }}
-        run: |
-          # xcrun xctrace returns via stderr, not the expected stdout (see https://developer.apple.com/forums/thread/663959)
-          device=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone.*?[^\(]+' | head -1 | awk '{$1=$1;print}' | sed -e "s/ Simulator$//"`
-          if [ $scheme = default ]; then scheme=$(cat default); fi
-          if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
-          file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
-          xcodebuild build-for-testing -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=$device"
-      - name: Test
-        env:
-          scheme: ${{ 'default' }}
-          platform: ${{ 'iOS Simulator' }}
-        run: |
-          # xcrun xctrace returns via stderr, not the expected stdout (see https://developer.apple.com/forums/thread/663959)
-          device=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone.*?[^\(]+' | head -1 | awk '{$1=$1;print}' | sed -e "s/ Simulator$//"`
-          if [ $scheme = default ]; then scheme=$(cat default); fi
-          if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
-          file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
-          xcodebuild test-without-building -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=$device"
+          event_path=${{ github.event_path }}
+
+          echo "Override event json file for pull_request_review event."
+
+          event_path="event.json"
+          cat ${{ github.event_path }} | jq '. |= .+ {"number": ${{  github.event.inputs.prnumber  }}}' > $event_path 
+
+          GITHUB_EVENT_PATH=$event_path GITHUB_EVENT_NAME=pull_request bundle exec fastlane custom_lane_danger token:${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Run Fastlane
+      #   run: bundle exec fastlane custom_lane_danger token:${{ secrets.GITHUB_TOKEN }}

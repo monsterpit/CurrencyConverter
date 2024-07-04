@@ -1,0 +1,6 @@
+xcodproj: CurrencyConverter.xcodeproj
+scheme: CurrencyConverter
+output_directory: fastlane/code_coverage
+html: true
+
+

@@ -1,0 +1,52 @@
+name: 'Lint PR Title'
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+permissions:
+  pull-requests: write
+
+jobs:
+  main:
+    name: Validate PR title
+    runs-on: ubuntu-latest
+    steps:
+      # - uses: actions/checkout@v2
+      #     with:
+      #       repository: monsterpit/CurrencyConverter
+      #       fetch-depth: 0
+      #       token: ${{ secrets.TOKEN }}
+      # - uses: MobSF/mobsfscan@main
+      #   with:
+      #     args: '. --json'
+      - uses: actions/checkout@v2
+        with:
+          # repository: monsterpit/CurrencyConverter
+          # fetch-depth: 0
+          token: ${{ secrets.TOKEN }}
+        # env:  
+        # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+
+      - uses: MobSF/mobsfscan@main
+        with:
+          args: '.'
+
+      - uses: MobSF/mobsfscan@main
+        with:
+          args: '. --sarif --output results.sarif || true'
+      - uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: results.sarif
+      # - uses: MobSF/mobsfscan@main
+      #   with:
+      #     args: '. --sarif --output results.sarif || true'
+
+      # - uses: github/codeql-action/upload-sarif@v3
+      #   with:
+      #     token: ${{ secrets.TOKEN }}
+      #     sarif_file: results.sarif
+      #     category: my-analysis-tool

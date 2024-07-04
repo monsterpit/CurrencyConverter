@@ -21,13 +21,13 @@ jobs:
         with:
           fetch-depth: 100
 
-      - name: Save message to file
-        run: echo "${{ github.event.inputs.message }}" > fastlane/xcov_output/index.json
-
       - name: Install dependencies
         run: gem install bundler
       - name: Install Fastlane
         run: bundle install
+        
+      - name: Save message to file
+        run: echo "${{ github.event.inputs.message }}" > fastlane/xcov_output/index.json
 
       - name: Run Fastlane
         run: bundle exec fastlane executeDangerWithPR token:${{ secrets.GITHUB_TOKEN }} pr:${{ github.event.inputs.prnumber }}

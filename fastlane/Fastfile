@@ -15,6 +15,8 @@
 
 default_platform(:ios)
 
+
+
 platform :ios do
 
   COVERAGE_FILE_PATH = "code_coverage/index.html"
@@ -74,6 +76,43 @@ platform :ios do
     )
   end
 
+  lane :check_changed_files do
+    changed_files = git_files_changed
+    puts "Changed files: #{changed_files}"
+  end
+  
+
+  lane :save_string_to_json do |options|
+    # Define the string
+    my_string = "{\"coverage\":50.9090}"
+
+    # sh "echo '${{ toJson(my_string) }}' > xcov_output/report.json " 
+    # json_data = JSON.parse(my_string)
+
+    # # Write the JSON data to a file
+    # File.open('xcov_output/report.json', 'w') do |file|
+    #   file.write(JSON.pretty_generate(json_data))
+    # end
+
+    sh "mkdir -p xcov_output"
+
+    sh "echo '#{my_string}' > xcov_output/report.json"
+
+
+    # Optionally, display the content of the JSON file
+    sh "cat xcov_output/report.json"
+
+    json_data = File.read('xcov_output/report.json')
+
+    # Parse the JSON data
+    parsed_data = JSON.parse(json_data)
+
+    # Extract the coverage value
+    coverage = parsed_data['coverage']
+
+    sh "echo '#{coverage}'"
+  end
+
   lane :executeDangerWithPR do |options|
     token = options[:token]
     danger(  
@@ -85,7 +124,6 @@ platform :ios do
     )
   end
 
-  
 
   # lane :custom_lane_wow do 
   #   slather(
@@ -134,13 +172,36 @@ platform :ios do
   )
   end
 
-  lane :custom_lane4 do
-   scan
-   xcov(
-    markdown_report: true,
-    is_swift_package: true,
-    output_directory: "fastlane/xcov_output"
-   )
+  lane :custom_lane4 do |options|
+  #  sh("rm -rf xcov_output")
+   
+  #  scan
+  #  xcov(
+  #   json_report: true,
+  #   is_swift_package: true,
+  #   output_directory: "fastlane/xcov_output"
+  #  )
+  #  source_path = "xcov_output/report.json"
+  #  destination_path = options[:export_path]
+  #  sh "cp #{source_path} #{destination_path}"
+  testing(options)
+  end
+
+  lane :testing do |options|
+    file_path = "xcov_output/report.json"
+    destination_path = options[:export_path]
+    file_content = "This is the content of the file."
+
+    # Create the file and write the content to it
+    File.open(file_path, "w") do |file|
+      file.write(file_content)
+    end
+
+    sh "cp #{file_path} #{destination_path}"
+  end
+
+  lane :testingMessage do |options|
+    sh "echo #{options[:message]}"
   end
 
   lane :custom_lane5 do
@@ -151,6 +212,37 @@ platform :ios do
   verbose: true
 )
   end
+
+  CODE_COVERAGE_FILE_NAME = "report.json"
+  desc "This lane fetches list of artificats"
+lane :fetch_artificats_list do |options|
+  artifactSlug = nil
+  # Define the cURL command to call the API
+  curl_command = "curl -s --location 'https://api.bitrise.io/v0.1/apps/#{options[:appSlug]}/builds/#{options[:buildSlug]}/artifacts' \
+--header 'accept: application/json' \
+--header 'Authorization: #{options[:bitriseToken]}'"
+
+  # Execute the cURL command and capture the response
+  api_response = sh(curl_command)
+
+  # Print the API response for debugging
+  UI.message("API Response: #{api_response}")
+
+  # Parse the JSON response
+  begin
+    parsed_response = JSON.parse(api_response)
+    # Process the parsed JSON response
+    parsed_response["data"].each do |artifact|
+      if artifact["title"] == CODE_COVERAGE_FILE_NAME
+        UI.message("Artifact Slug: #{artifact["slug"]}")
+        # call_artificat(artifactSlug: artifact["slug"],appSlug: appSlug,buildSlug: buildSlug)
+        break
+      end
+    end
+  rescue JSON::ParserError => e
+    UI.error("Failed to parse JSON response: #{e.message}")
+  end
+end
 
   lane :code_coverage do
     current_dir = Dir.pwd
@@ -175,6 +267,45 @@ platform :ios do
       puts "File not found."
     end
   end
+
+  lane :post_message_on_github_1 do |options|
+    input_string = options[:message]
+    sh "echo '#{input_string}'"
+    # Split the input string into key-value pairs based on the separator "|"
+    pairs = input_string.split('|')
+
+    # Initialize an empty hash to store the key-value pairs
+    result_hash = {}
+    
+    # Iterate over each pair and split it into key and value based on the separator "=>"
+    pairs.each do |pair|
+      key, value = pair.split('=>')
+      result_hash[key] = value
+    end
+
+    sh "echo 'Value of key1 is #{result_hash['report.json']}'"
+  end 
+
+
+  desc "Download and save file"
+  lane :download_and_save_file do |options|
+    # Get the URL and destination path from options
+    url = options[:url] + "?access_token=9l8PM-KRCrBQWUJ3Y8-1NaixC9eCM1lGExF2R-pQw3N0DNwMXVkFpSOuAP2aMe3hwfc6hsLLoJh25WFb1ulrHg"
+    destination_path = options[:destination_path]
+
+    # Download the file using open-uri
+    require 'open-uri'
+    file_content = URI.open(url).read
+
+    # Save the file to the destination path
+    File.open(destination_path, 'wb') do |file|
+      file.write(file_content)
+    end
+
+    # Log success message
+    puts "File downloaded and saved to #{destination_path}"
+  end
+
 
   lane :post_message_on_github do |options|
     # Extract required parameters
@@ -214,3 +345,4 @@ platform :ios do
   end
 
 end
+
