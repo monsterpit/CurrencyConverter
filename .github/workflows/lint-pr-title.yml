@@ -39,3 +39,4 @@ jobs:
         with:
           token: ${{ secrets.TOKEN }}
           sarif_file: results.sarif
+          category: my-analysis-tool
