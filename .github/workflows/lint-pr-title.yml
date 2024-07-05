@@ -49,6 +49,7 @@ jobs:
       - run: semgrep ci --sarif > semgrep.sarif
         env:
           SEMGREP_APP_TOKEN: e904ea74ef90d007e6f2c7558642e340852817f53f9fa86083aa14c1a6f8b3c6
+      - run: cat semgrep.sarif
       - name: Upload SARIF file for GitHub Advanced Security Dashboard
         uses: github/codeql-action/upload-sarif@v3
         with:
