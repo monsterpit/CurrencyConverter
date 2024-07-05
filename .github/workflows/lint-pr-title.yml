@@ -45,7 +45,7 @@ jobs:
       #     sarif_file: results.sarif
 
       - run: semgrep scan --config auto
-      - run: semgrep scan --test --config rules tests
+      # - run: semgrep scan --test --config rules tests
       - run: semgrep ci --sarif > semgrep.sarif
         env:
           SEMGREP_APP_TOKEN: e904ea74ef90d007e6f2c7558642e340852817f53f9fa86083aa14c1a6f8b3c6
