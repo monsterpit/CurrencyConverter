@@ -14,6 +14,8 @@ jobs:
   main:
     name: Validate PR title
     runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep
     steps:
       # - uses: actions/checkout@v2
       #     with:
@@ -31,22 +33,26 @@ jobs:
         # env:  
         # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
 
-      - uses: MobSF/mobsfscan@main
-        with:
-          args: '.'
+      # - uses: MobSF/mobsfscan@main
+      #   with:
+      #     args: '.'
 
-      - uses: MobSF/mobsfscan@main
-        with:
-          args: '. --sarif --output results.sarif || true'
-      - uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: results.sarif
       # - uses: MobSF/mobsfscan@main
       #   with:
       #     args: '. --sarif --output results.sarif || true'
-
       # - uses: github/codeql-action/upload-sarif@v3
       #   with:
-      #     token: ${{ secrets.TOKEN }}
       #     sarif_file: results.sarif
-      #     category: my-analysis-tool
+
+      - run: semgrep scan --config auto --json > semgrep.json
+      - run: cat semgrep.json
+      # - run: semgrep scan --test --config rules tests
+      - run: semgrep ci --sarif > semgrep.sarif
+        env:
+          SEMGREP_APP_TOKEN: e904ea74ef90d007e6f2c7558642e340852817f53f9fa86083aa14c1a6f8b3c6
+      - run: cat semgrep.sarif
+      - name: Upload SARIF file for GitHub Advanced Security Dashboard
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: semgrep.sarif
+        if: always()
